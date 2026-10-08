@@ -3,6 +3,7 @@ import { useState } from 'react';
 interface PromptInputProps {
   onGenerate: (prompt: string) => void;
   isLoading: boolean;
+  promptHistory?: string[];
 }
 
 const EXAMPLES = [
@@ -14,7 +15,7 @@ const EXAMPLES = [
   '테이블 행 상세보기 패널. 선택한 고객의 기본 정보와 최근 활동 표시',
 ];
 
-export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
+export function PromptInput({ onGenerate, isLoading, promptHistory = [] }: PromptInputProps) {
   const [prompt, setPrompt] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -72,6 +73,21 @@ export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
           </button>
         ))}
       </div>
+      {promptHistory.length > 0 && (
+        <div className="prompt-examples">
+          <span className="examples-label">최근 프롬프트</span>
+          {promptHistory.map((prompt) => (
+            <button
+              key={prompt}
+              className="example-chip"
+              onClick={() => handleExampleClick(prompt)}
+              type="button"
+            >
+              {prompt}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
